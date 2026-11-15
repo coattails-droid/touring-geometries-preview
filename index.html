@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="sunlight">
 <head>
+<script>
+  /* Theme is set before first paint: saved choice wins, otherwise Sunlight (the standard). */
+  (function(){try{var t=localStorage.getItem('coattails-theme');document.documentElement.setAttribute('data-theme',t==='warmgray'?'warmgray':'sunlight');}catch(e){document.documentElement.setAttribute('data-theme','sunlight');}})();
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Touring Geometries - Preview</title>
@@ -23,37 +28,76 @@
 <meta name="twitter:description" content="A 3D generative art series where each token sings — D major pentatonic at A=432Hz, synthesized live in your browser.">
 <meta name="twitter:image" content="https://coattails-droid.github.io/touring-geometries-preview/og-still.png">
 <style>
+  /* Sunlight (default) — the branding guide standard. */
+  :root, :root[data-theme="sunlight"]{
+    --bg:#0d0708; --surface:#0d0708; --ink:#e8e2d4; --muted:#9a937f;
+    --line:#3a362c; --line-dark:#3a362c; --title:#ffc46e; --accent:#ffc46e;
+    --btn-bg:#ffc46e; --btn-ink:#14100a; --btn-hover:#ffa37e; --focus:#ffc46e;
+    --shadow-card:none;
+    --font-display:'DejaVu Sans Mono',Menlo,Consolas,'Courier New',monospace;
+    --font-body:'DejaVu Sans Mono',Menlo,Consolas,'Courier New',monospace;
+  }
+  /* Warm Gray (visitor alternate) — branding guide v1.1 Light theme. */
+  :root[data-theme="warmgray"]{
+    --bg:#E8E4DC; --surface:#F5F2EB; --ink:#111110; --muted:#57534A;
+    --line:#CFC9BB; --line-dark:#111110; --title:#000; --accent:#111110;
+    --btn-bg:#111110; --btn-ink:#F5F2EB; --btn-hover:#26241F; --focus:#111110;
+    --shadow-card:0 20px 38px -24px rgba(30,26,18,.35);
+    --font-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  :root { color-scheme: dark; }
+  :root[data-theme="warmgray"] { color-scheme: light; }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0d0708; color: #e8e2d4; font-family: 'DejaVu Sans Mono', Menlo, Consolas, 'Courier New', monospace;
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body);
          padding: 48px 24px 80px; }
   header { max-width: 1200px; margin: 0 auto 40px; }
-  h1 { font-size: 20px; letter-spacing: 0.35em; font-weight: 600; color: #ffc46e; }
-  p.sub { margin-top: 12px; font-size: 15px; letter-spacing: 0.12em; color: #9a937f; }
+  h1 { font-size: 20px; letter-spacing: 0.35em; font-weight: 600; color: var(--title); }
+  p.sub { margin-top: 12px; font-size: 15px; letter-spacing: 0.12em; color: var(--muted); }
   p.audio { margin-top: 16px; font-size: 16px; line-height: 1.8; letter-spacing: 0.04em;
-            color: #9a937f; max-width: 720px; }
-  p.audio b { color: #ffc46e; font-weight: 600; }
+            color: var(--muted); max-width: 720px; }
+  p.audio b { color: var(--accent); font-weight: 600; }
   .grid { max-width: 1200px; margin: 0 auto; display: grid;
            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
   .card img { width: 100%; aspect-ratio: 1; display: block; background: #000;
-                 border: 1px solid #3a362c; }
+                 border: 1px solid var(--line); }
   .meta { display: flex; justify-content: space-between; align-items: baseline;
            padding: 10px 2px; font-size: 14px; letter-spacing: 0.08em; }
-  .tok { color: #ffc46e; font-weight: 600; white-space: nowrap; }
-  .traits { color: #9a937f; text-align: right; }
-  .traitlist { font-size: 13px; color: #9a937f; line-height: 1.75; letter-spacing: 0.04em; padding: 0 2px 12px; }
+  .tok { color: var(--accent); font-weight: 600; white-space: nowrap; }
+  .traits { color: var(--muted); text-align: right; }
+  .traitlist { font-size: 13px; color: var(--muted); line-height: 1.75; letter-spacing: 0.04em; padding: 0 2px 12px; }
   .live { display: block; margin: 0 2px 14px; padding: 8px 0; text-align: center;
-          font-size: 14px; letter-spacing: 0.14em; color: #ffc46e; text-decoration: none;
-          border: 1px solid #3a362c; border-radius: 6px; background: transparent; }
-  .live:hover { background: #1c1611; border-color: #ffc46e; }
+          font-size: 14px; letter-spacing: 0.14em; color: var(--accent); text-decoration: none;
+          border: 1px solid var(--line); border-radius: 6px; background: transparent; }
+  .live:hover { background:var(--btn-bg); color:var(--btn-ink); border-color:var(--btn-bg); }
   a.mintbtn {
     display: inline-block; margin-top: 20px; padding: 12px 28px;
-    background: transparent; color: #ffc46e; border: 1px solid #ffc46e; border-radius: 0;
+    background: transparent; color: var(--accent); border: 1px solid var(--accent); border-radius: 0;
     font-size: 15px; letter-spacing: 0.2em; font-weight: 600;
     text-decoration: none;
   }
-  a.mintbtn:hover { background: #ffc46e; color: #14100a; }
+  a.mintbtn:hover { background:var(--btn-bg); color:var(--btn-ink); }
   footer { max-width: 1200px; margin: 56px auto 0; font-size: 13px;
-            letter-spacing: 0.1em; color: #9a937f; }
+            letter-spacing: 0.1em; color: var(--muted); }
+
+  /* ---------- theme toggle (guide v1.1) ---------- */
+  .topbar{display:flex;justify-content:flex-end;max-width:1200px;margin:0 auto;padding:0 0 18px;}
+  .theme-toggle{display:inline-flex;border:1.5px solid var(--line-dark);border-radius:999px;
+    overflow:hidden;background:var(--surface);}
+  .theme-toggle button{appearance:none;-webkit-appearance:none;border:0;background:transparent;
+    color:var(--muted);font-family:var(--font-body);font-size:12px;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;padding:9px 18px;cursor:pointer;
+    transition:background .2s ease,color .2s ease;}
+  .theme-toggle button[aria-pressed="true"]{background:var(--btn-bg);color:var(--btn-ink)}
+  .theme-toggle button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  /* ---------- centered content ---------- */
+  header{text-align:center}
+  p.audio{margin-left:auto;margin-right:auto}
+  .traitlist{text-align:center}
+  footer{text-align:center}
+  .card{box-shadow:var(--shadow-card)}
+  h1{font-family:var(--font-display)}
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QFQNW5T87Y"></script>
@@ -65,9 +109,15 @@
 </script>
 </head>
 <body>
+<div class="topbar">
+  <div class="theme-toggle" role="group" aria-label="Theme">
+    <button type="button" data-set-theme="sunlight" aria-pressed="true">Dark</button>
+    <button type="button" data-set-theme="warmgray" aria-pressed="false">Light</button>
+  </div>
+</div>
 <header>
   <h1>TOURING GEOMETRIES</h1>
-  <p class="sub">Series 3 &middot; <a href="https://artist.coattails.eth.limo/" style="color:#ffc46e;text-decoration:none">CALVIN FOUGHT (COATTAILS)</a></p>
+  <p class="sub">Series 3 &middot; <a href="https://artist.coattails.eth.limo/" style="color:var(--accent);text-decoration:none">CALVIN FOUGHT (COATTAILS)</a></p>
   <p class="sub">volumetric · 3 tokens · 16s orbit, camera 5.625° below center level</p>
   <p class="audio"><b>Each token sings — and each token has a heartbeat.</b> Its accent-dot
   field is a generative sequencer in D&nbsp;major pentatonic at A=432Hz: the hash writes
@@ -102,5 +152,25 @@
       <a class="live" href="live-13.html" target="_blank">OPEN LIVE TOKEN &#9834;</a>
     </div>
 </div>
+<script>
+  /* Theme toggle wiring (guide v1.1): sync pressed state, save the choice. */
+  (function(){
+    var root=document.documentElement;
+    var btns=document.querySelectorAll('[data-set-theme]');
+    function sync(){
+      var t=root.getAttribute('data-theme')||'sunlight';
+      btns.forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-set-theme')===t?'true':'false');});
+    }
+    btns.forEach(function(b){
+      b.addEventListener('click',function(){
+        var t=b.getAttribute('data-set-theme');
+        root.setAttribute('data-theme',t);
+        try{localStorage.setItem('coattails-theme',t);}catch(e){}
+        sync();
+      });
+    });
+    sync();
+  })();
+</script>
 </body>
 </html>
